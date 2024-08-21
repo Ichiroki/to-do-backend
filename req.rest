@@ -1,0 +1,21 @@
+###
+
+Post http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+    "id": "cb561ab5-41f0-4162-a7e9-9a7b933a697a",
+    "first_name": "Fahrezi",
+    "last_name": "Rizqiawan",
+    "phone": "0843534545",
+    "nationality": "Indonesia",
+    "email": "fahrezi@gmail.com",
+    "password": "password",
+    "createdAt": "21 August 2024 12:37:05 A.M",
+    "updatedAt": "21 August 2024 12:37:05 A.M"
+}
+
+###
+
+get http://localhost:3000/api/user/f461cd5a-cc07-4bb7-926b-2f09e11e8ad0
+Content-Type: application/json

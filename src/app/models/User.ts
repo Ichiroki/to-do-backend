@@ -1,3 +1,7 @@
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
+
 export class User {
     constructor(
         public readonly id: string,
@@ -9,5 +13,15 @@ export class User {
         public password: string,
         public readonly createdAt: Date,
         public readonly updatedAt: Date
-    ) {}
+    ) { }
+
+    static async find (id: string) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        return user
+    }
 }
