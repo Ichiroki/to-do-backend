@@ -23,7 +23,6 @@ export const login = async (req: Request, res: Response) => {
                     }
                 })
                 const sign = jwt.sign({user}, 'user_permission')
-                res.cookie('user_permission', sign, {secure: true, maxAge: 3600000})
                 res.status(201).json({user, message: 'User successfully login', sign})
         } else {
             console.log('email not found')
