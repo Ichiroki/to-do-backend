@@ -10,7 +10,7 @@ export class User {
         public phone: string,
         public nationality: string,
         public email: string,
-        public password: string,
+        public password: string | null,
         public readonly createdAt: Date,
         public readonly updatedAt: Date
     ) { }
