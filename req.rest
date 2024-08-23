@@ -4,7 +4,6 @@ Post http://localhost:3000/api/user
 Content-Type: application/json
 
 {
-    "id": "cb561ab5-41f0-4162-a7e9-9a7b933a697a",
     "first_name": "Fahrezi",
     "last_name": "Rizqiawan",
     "phone": "0843534545",
@@ -23,4 +22,14 @@ Content-Type: application/json
 {
     "email": "fahrezi@gmail.com",
     "password": "password"
+}
+
+###
+
+post http://localhost:3000/api/priorities/create
+Content-Type: application/json
+
+{
+    "priorities_name": "Urgent",
+    "user_id": "3d6e71c8-2e5c-4806-a3c5-d6c640211c94"
 }

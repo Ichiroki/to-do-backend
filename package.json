@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.ts",
-    "db:push": "cd src && prisma db push --schema=./prisma/schema.prisma"
+    "db:push": "cd src && prisma db push --schema=./prisma/schema.prisma",
+    "db:migrate": "cd src && prisma migrate dev --schema=./prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

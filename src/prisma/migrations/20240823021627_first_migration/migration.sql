@@ -32,6 +32,7 @@ CREATE TABLE `Task` (
 CREATE TABLE `Priorities` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `priorities_name` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -43,3 +44,6 @@ ALTER TABLE `Task` ADD CONSTRAINT `Task_user_id_fkey` FOREIGN KEY (`user_id`) RE
 
 -- AddForeignKey
 ALTER TABLE `Task` ADD CONSTRAINT `Task_priorities_id_fkey` FOREIGN KEY (`priorities_id`) REFERENCES `Priorities`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Priorities` ADD CONSTRAINT `Priorities_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

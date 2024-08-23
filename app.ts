@@ -6,10 +6,11 @@ import cookieParser from 'cookie-parser'
 const app = Express()
 
 const api = require('./src/routes/api.ts')
+
 // Middleware setup
 app.use(Express.json())
-app.use(bodyParser.json())
 app.use(cookieParser())
+app.use(bodyParser.json())
 
 // Routes
 app.use('/api', api)

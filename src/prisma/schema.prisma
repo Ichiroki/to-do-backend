@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          String    @id
+  id          String    @id @default(uuid())
   first_name  String
   last_name   String
   phone       String?    
@@ -22,6 +22,7 @@ model User {
   email       String    @unique
   password    String
   tasks       Task[]
+  priorities  Priorities[]
   createdAt   DateTime?  @default(now())
   updatedAt   DateTime?  @default(now())
 }
@@ -43,6 +44,8 @@ model Priorities {
   id                  Int       @id @default(autoincrement())
   priorities_name     String
   tasks               Task[]
+  user_id             String
+  user                User      @relation(fields: [user_id], references: [id])
   createdAt           DateTime?  @default(now())
   updatedAt           DateTime?  @default(now())
 }
