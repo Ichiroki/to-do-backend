@@ -33,3 +33,27 @@ Content-Type: application/json
     "priorities_name": "Urgent",
     "user_id": "3d6e71c8-2e5c-4806-a3c5-d6c640211c94"
 }
+
+###
+
+post http://localhost:3000/api/task/create
+Content-Type: application/json
+
+{
+    "task_name": "Tambah sistem task",
+    "user_id": "3d6e71c8-2e5c-4806-a3c5-d6c640211c94",
+    "priorities_id": 3,
+    "description": "Coba tambah kodingan di file tersebut"
+}
+
+###
+
+post http://localhost:3000/api/task/6/update
+Content-Type: application/json
+
+{
+    "task_name": "Revisi sistem task",
+    "user_id": "3d6e71c8-2e5c-4806-a3c5-d6c640211c94",
+    "priorities_id": 3,
+    "description": "Coba tambah kodingan di file tersebut"
+}
