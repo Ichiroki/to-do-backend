@@ -57,3 +57,9 @@ Content-Type: application/json
     "priorities_id": 3,
     "description": "Coba tambah kodingan di file tersebut"
 }
+
+
+###
+
+post http://localhost:3000/api/task/6/delete
+Content-Type: application/json

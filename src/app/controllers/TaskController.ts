@@ -46,3 +46,21 @@ export const updateTask = async (req, res) => {
         console.error('Internal Server Error, please wait : ' + e)
     }
 }
+
+export const deleteTask = async (req, res) => {
+    const taskId = parseInt(req.params['task_id'])
+    try {
+        const task = await prisma.task.delete({
+            where: {
+                id: taskId
+            },
+        })
+        if(task) {
+            res.status(201).json({success: true, message: 'This task has successfully deleted'})
+        } else {
+            res.status(422).json({success: true, message: 'This task failed to be deleted'})
+        }
+    } catch(e) {
+        console.error('Internal Server Error, please wait : ' + e)
+    }
+}
