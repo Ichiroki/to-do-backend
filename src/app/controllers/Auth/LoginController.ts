@@ -1,39 +1,65 @@
-import { User } from '../../models/User'
-import express, { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import hashPassword from '../../../services/bcrypt'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
+import { z } from 'zod'
+import userLogin from '../../../services/validation/UserLoginRequest'
 
 const csrf = require('csrf')
 const prisma = new PrismaClient()
 
+const token = new csrf()
+
 export const login = async (req: Request, res: Response) => {
     try {
-        const email: string = req.body.email
-        let pw: string = req.body.password
+        const validated = userLogin.parse(req.body)
+
         const user = await prisma.user.findUnique({
             where: {
-                email
+                email: validated.email
             }
         })
         if(user) {
-                bcrypt.compare(pw, user.password, function(err, res) {
-                    if(pw != user.password) {
-                        console.log(err)
+                await bcrypt.compare(validated.password, user.password)
+                .then((response) => {
+                    if(response == false) {
+                        res.status(422).json({'success': false, 'message': 'Password does not match'})
+                    } else {
+                        const secret = token.secretSync()
+                        const csrfToken = token.create(secret)
+    
+                        const sign = jwt.sign({user}, 'user_permission')
+                        res.locals.token = sign
+                        res.locals.csrfToken = csrfToken
+                        // res.cookie('ICHIROKI_SESSION', sign, {secure: true, maxAge: 3600000})
+                        // res.cookie('csrf-token', csrfToken, {secure: true, maxAge: 3600000})
+                        res.status(201).json({email: user.email, message: 'User successfully login', token: sign, csrf: csrfToken})
                     }
                 })
-                const secret = csrf.secretSync()
-                const csrfToken = csrf.create(secret)
-
-                const sign = jwt.sign({user}, 'user_permission')
-                res.cookie('ICHIROKI_SESSION', sign, {secure: true, maxAge: 3600000})
-                res.status(201).json({email: user.email, message: 'User successfully login', sign, csrf: csrfToken})
+                .catch((err) => {
+                    if(err instanceof z.ZodError) {
+                        res.status(422).json({'success': false, 'errors': err.errors})
+                    }
+                })
         } else {
-            res.status(422).json({success: 'false', message: 'Email does not exist'})
+            const err = {}
+            if(err instanceof z.ZodError) {
+                res.status(422).json({success: 'false', errors: err.errors[0].message})
+            }
+
+            res.status(500).json({success: 'false', errors: 'Internal Server Error, please wait'})
         }
         }
     catch(err) {
-        console.error(err)
+        if(err instanceof z.ZodError) {
+            const errors = err.errors.map(e => ({field: e.path[0], message: e.message}))
+            res.status(422).json({
+                'success': 'failed',
+                'errors': err.errors[0].message
+            });
+        } else {
+            console.error(err)
+            res.status(500).json({'message': "Internal Server Error"})
+        }
     }
 }
